@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Coding Agent</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">⚡</span>
+                    <h1>Agent</h1>
+                </div>
+                <button class="new-chat-btn" title="New Chat">+</button>
+            </div>
+            
+            <div class="file-explorer">
+                <div class="explorer-header">
+                    <span>Explorer</span>
+                    <button class="icon-btn" title="Refresh">↻</button>
+                </div>
+                <ul class="file-list" id="fileList">
+                    <li class="file-item active" data-file="index.html">
+                        <span class="file-icon html">📄</span>
+                        <span class="file-name">index.html</span>
+                    </li>
+                    <li class="file-item" data-file="style.css">
+                        <span class="file-icon css">🎨</span>
+                        <span class="file-name">style.css</span>
+                    </li>
+                    <li class="file-item" data-file="script.js">
+                        <span class="file-icon js">⚙️</span>
+                        <span class="file-name">script.js</span>
+                    </li>
+                    <li class="file-item" data-file="design.md">
+                        <span class="file-icon md">📝</span>
+                        <span class="file-name">design.md</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="status-indicator">
+                    <span class="status-dot online"></span>
+                    <span>Online</span>
+                </div>
+                <button class="settings-btn" title="Settings">⚙️</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-bar">
+                <div class="chat-title">
+                    <h2>New Project</h2>
+                    <span class="badge">AI Agent</span>
+                </div>
+                <div class="top-actions">
+                    <button class="action-btn" id="askQuestionBtn">❓ Ask Question</button>
+                    <button class="action-btn" id="runCodeBtn">▶ Run</button>
+                </div>
+            </header>
+
+            <!-- Chat Area -->
+            <div class="chat-container" id="chatContainer">
+                <div class="messages-wrapper" id="messagesWrapper">
+                    <!-- Welcome Message -->
+                    <div class="message ai-message">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            <p>Hello! I'm your AI Coding Agent. I can help you:</p>
+                            <ul>
+                                <li>Read and analyze files in real-time</li>
+                                <li>Write and modify code</li>
+                                <li>Answer questions about your project</li>
+                                <li>Execute tools and commands</li>
+                            </ul>
+                            <p>What would you like me to build today?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Buttons -->
+                <div class="quick-actions" id="quickActions">
+                    <button class="quick-action" onclick="setPrompt('Read the current files')">📖 Read Files</button>
+                    <button class="quick-action" onclick="setPrompt('Explain the code structure')">🧠 Explain Code</button>
+                    <button class="quick-action" onclick="setPrompt('Fix any bugs in the code')">🐛 Fix Bugs</button>
+                    <button class="quick-action" onclick="setPrompt('Improve the design')">🎨 Improve Design</button>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <textarea id="userInput" placeholder="Ask me anything or describe what you want to build..." rows="1"></textarea>
+                    <button class="send-btn" id="sendBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-hint">
+                    <span>Press Enter to send • Shift + Enter for new line</span>
+                    <span class="ai-badge">Powered by AI</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Code Editor Panel -->
+        <aside class="editor-panel">
+            <div class="editor-header">
+                <div class="editor-tabs" id="editorTabs">
+                    <button class="tab active" data-tab="index.html">index.html</button>
+                    <button class="tab" data-tab="style.css">style.css</button>
+                    <button class="tab" data-tab="script.js">script.js</button>
+                </div>
+                <div class="editor-actions">
+                    <button class="icon-btn" title="Copy">📋</button>
+                    <button class="icon-btn" title="Format">✨</button>
+                    <button class="icon-btn" title="Close">×</button>
+                </div>
+            </div>
+            <div class="editor-body">
+                <div class="code-container">
+                    <pre class="code-block" id="codeDisplay"><code class="language-html" id="codeContent">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;My Project&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Hello World&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Terminal Panel -->
+        <aside class="terminal-panel">
+            <div class="terminal-header">
+                <span>Terminal</span>
+                <div class="terminal-controls">
+                    <button class="icon-btn" title="Minimize">−</button>
+                    <button class="icon-btn" title="Clear">🗑️</button>
+                    <button class="icon-btn" title="Close">×</button>
+                </div>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span>
+                    <span class="terminal-command">agent --init</span>
+                </div>
+                <div class="terminal-output">
+                    <span class="success">✓ Agent initialized successfully</span>
+                    <span class="info">ℹ Ready to assist with coding tasks</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span>
+                    <span class="terminal-cursor"></span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Question Modal -->
+    <div class="modal-overlay" id="questionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Ask a Question</h3>
+                <button class="close-btn" id="closeModal">×</button>
+            </div>
+            <div class="modal-body">
+                <textarea id="questionInput" placeholder="Type your question here..."></textarea>
+                <button class="submit-question-btn" id="submitQuestion">Send Question</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
